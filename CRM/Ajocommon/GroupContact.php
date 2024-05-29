@@ -45,6 +45,9 @@ class CRM_Ajocommon_GroupContact {
   }
 
   public static function swapGroup(int $contactId, int $oldGroupId, int $newGroupId): void {
+    // in case the contact is already in the target group
+    self::delete($contactId, $newGroupId);
+
     $sql = "
       update
         civicrm_group_contact

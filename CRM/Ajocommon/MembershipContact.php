@@ -2,9 +2,9 @@
 
 class CRM_Ajocommon_MembershipContact {
   public static function getCurrent($contactId, $typeId) {
-    return \Civi\Api4\Membership::get(TRUE)
-      ->addWhere('contact_id', $contactId)
-      ->addWhere('membership_type_id', $typeId)
+    return \Civi\Api4\Membership::get(FALSE)
+      ->addWhere('contact_id', '=', $contactId)
+      ->addWhere('membership_type_id', '=', $typeId)
       ->addWhere('status_id', 'IN', [1, 2])
       ->execute()
       ->first();
