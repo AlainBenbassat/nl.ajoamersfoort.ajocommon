@@ -28,14 +28,14 @@ class CRM_Ajocommon_GroupContact {
   }
 
   public static function delete(int $contactId, int $groupId): void {
-    \Civi\Api4\GroupContact::delete(FALSE)
-      ->addWhere('contact_id', '=', $contactId)
-      ->addWhere('group_id', '=', $groupId)
-      ->execute();
+    self::changeStatus($contactId, $groupId, 'Removed');
   }
 
   public static function create(int $contactId, int $groupId): void {
-    if (!self::isGroupContact($contactId, $groupId, TRUE)) {
+    if (self::isGroupContact($contactId, $groupId, TRUE)) {
+      self::changeStatus($contactId, $groupId, 'Added');
+    }
+    else {
       \Civi\Api4\GroupContact::create(FALSE)
         ->addValue('status', 'Added')
         ->addValue('group_id', $groupId)
